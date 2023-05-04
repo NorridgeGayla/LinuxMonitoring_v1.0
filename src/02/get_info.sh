@@ -1,0 +1,18 @@
+#!/bin/bash
+
+HOSTNAME=$( hostname )
+TIMEZONE=$( timedatectl | grep "Time zone" | sed 's/                Time zone: //' )
+USER=$( whoami )
+OS=$( cat /etc/issue | sed 's/\\n \\l//' )
+DATE=$( date +'%d %b %Y %T' )
+UPTIME=$( uptime | awk '{ print $3 }' | sed 's/,//' )
+UPTIME_SEC=$( cat /proc/uptime | awk '{ print $1 }' )
+IP=$( hostname -I | awk '{ print $1 }' )
+MASK=$( ifconfig | grep $IP | awk '{ print $4 }' )
+GATEWAY=$( ip r | grep default | awk '{ print $3 }' )
+RAM_TOTAL=$( free -m | grep Mem | awk '{ printf "%.3f GB", $2 / 1000 }' )
+RAM_USED=$( free -m |  grep Mem | awk '{ printf "%.3f GB", $3 / 1000 }' )
+RAM_FREE=$( free -m |  grep Mem | awk '{ printf "%.3f GB", $4 / 1000 }' )
+SPACE_ROOT=$( df | grep -w / | awk '{ printf "%.2f MB", $2 / 1000 }' )
+SPACE_ROOT_USED=$( df | grep -w / | awk '{ printf "%.2f MB", $3 / 1000 }' )
+SPACE_ROOT_FREE=$( df | grep -w / | awk '{ printf "%.2f MB", $4 / 1000 }' )
